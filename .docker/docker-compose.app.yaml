@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  # Defines a service name
+  app:
+    # Sets the image name for the built image
+    image: $IMAGE_NAME:$IMAGE_TAG
+    container_name: $CONTAINER_NAME
+    pull_policy: always
+    restart: unless-stopped
+    # Sets the hostname of the container
+    hostname: $CONTAINER_HOSTNAME
+    ports:
+      - "$HOST_WEB_SVC_PORT:$CONTAINER_WEB_SVC_PORT"
+    volumes:
+      # Maps directories from the host to the container
+      - open-webui:$CONTAINER_DATA_DIR
+    # set the environment variables
+    environment:
+      OLLAMA_API_BASE_URL: $OLLAMA_API_BASE_URL
+      WEBUI_SECRET_KEY: $WEBUI_SECRET_KEY
+networks:
+  default:
+    # Sets the name of the default network and makes it external
+    name: $CONTAINER_NETWORK_NAME
+    external: true
+volumes:
+  open-webui: {}
